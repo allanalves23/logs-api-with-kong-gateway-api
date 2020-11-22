@@ -26,3 +26,4 @@ plugins:
   config: 
     strip_claims: "false"
     token_required: "true"
+- name: prometheus

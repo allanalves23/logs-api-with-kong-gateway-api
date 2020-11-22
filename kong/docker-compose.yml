@@ -11,7 +11,7 @@ services:
           - KONG_PROXY_ACCESS_LOG=/dev/stdout
           - KONG_PROXY_ERROR_LOG=/dev/stderr
           - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
-          - KONG_PLUGINS=kong-jwt2header, http-log
+          - KONG_PLUGINS=kong-jwt2header, http-log, prometheus
       ports: 
         - "8000:8000"
         - "8443:8443"
@@ -41,6 +41,29 @@ services:
       - mongodb_data:/data/db
     ports:
       - 27017:27017
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    ports: 
+      - 9090:9090
+    volumes: 
+      - ./plugins/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: "--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus"
+    ports: 
+      - 9090:9090
+    networks: 
+        - kong-net
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    volumes: 
+      - ./grafana/provisioning/:/etc/grafana/provisioning
+    ports:
+      - 3000:3000
+    networks: 
+        - kong-net
+
 
 networks: 
   kong-net:
