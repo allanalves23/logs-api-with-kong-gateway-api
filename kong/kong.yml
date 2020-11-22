@@ -1,0 +1,28 @@
+_format_version: "2.1"
+
+services:
+- name: master-api
+  url: https://api.codermind.com.br/master
+  routes:
+  - name: codermind
+    paths:
+    - /master
+- name: tcc-api
+  url: https://tcc-api.azurewebsites.net/
+  routes:
+  - name: tcc
+    paths:
+    - /tcc-api
+
+plugins:
+
+- name: http-log
+  config: 
+    http_endpoint: http://log-api:3005/logs
+    method: POST
+    timeout: 10000
+    keepalive: 60000
+- name: kong-jwt2header
+  config: 
+    strip_claims: "false"
+    token_required: "true"
