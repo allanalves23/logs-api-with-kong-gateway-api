@@ -27,7 +27,6 @@ services:
         - "3005:3005"
       networks: 
         - kong-net
-    
   db-mongo:
     container_name: db
     image: mongo
@@ -36,6 +35,8 @@ services:
       - MONGO_INITDB_DATABASE=db
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=123456
+    networks: 
+        - kong-net
     volumes:
       - mongodb_data:/data/db
     ports:
