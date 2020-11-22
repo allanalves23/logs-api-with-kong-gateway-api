@@ -1,0 +1,16 @@
+{
+  "name": "logs-api-with-kong-gateway-api",
+  "version": "1.0.0",
+  "description": "Kong gateway api that send request and response logging into nodejs logs api and saving the data on mongodb server",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-modules index.mjs"
+  },
+  "author": "Allan Wanderley Alves",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.3"
+  }
+}
