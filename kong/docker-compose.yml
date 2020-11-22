@@ -1,0 +1,49 @@
+version: '3.1'
+
+services: 
+  kong:
+      container_name: kong-api-management
+      build: .
+      restart: always
+      environment:
+          - KONG_DATABASE=off
+          - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
+          - KONG_PROXY_ACCESS_LOG=/dev/stdout
+          - KONG_PROXY_ERROR_LOG=/dev/stderr
+          - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+          - KONG_PLUGINS=kong-jwt2header, http-log
+      ports: 
+        - "8000:8000"
+        - "8443:8443"
+        - "8001:8001"
+        - "8444:8444"
+      networks: 
+        - kong-net
+  log-api:
+      container_name: log-api
+      build: ../.
+      restart: always
+      ports: 
+        - "3005:3005"
+      networks: 
+        - kong-net
+    
+  db-mongo:
+    container_name: db
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=db
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - 27017:27017
+
+networks: 
+  kong-net:
+    driver: bridge
+
+volumes:
+  mongodb_data:
