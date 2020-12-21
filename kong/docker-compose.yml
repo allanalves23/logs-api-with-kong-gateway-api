@@ -49,8 +49,6 @@ services:
     volumes: 
       - ./plugins/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command: "--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus"
-    ports: 
-      - 9090:9090
     networks: 
         - kong-net
   grafana:
